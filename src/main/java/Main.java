@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
-        
+
         ArrayList<Insan> humans= new ArrayList();
         humans.add(new Insan("Elnurl", "Eliyev", (short) 35));
         humans.add(new Insan("Elnurf", "Memmedov", (short) 26));
@@ -47,6 +48,7 @@ public class Main {
         System.out.println(minAge);
 
         File file = new File("Humans.txt");
+        ArrayList<Insan>  humanListFromFile = new ArrayList<>();
         try {
             file.createNewFile();
             FileWriter writer = new FileWriter(file);
@@ -57,15 +59,17 @@ public class Main {
             System.out.println("Melumatlar fayla yazildi");
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()){
-                System.out.println(scanner.nextLine());
-                String[] data = (scanner.nextLine()).split(" ");
-                Insan insan = new Insan(data[0], data[1], Short.parseShort(data[2]));
+                String line = scanner.nextLine();
+                System.out.println(line);
+                String[] data = line.split(" ");
+                if(data.length == 3){
+                    Insan insan = new Insan(data[0], data[1], Short.parseShort(data[2]));
+                    humanListFromFile.add(insan);
+                }
             }
             scanner.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 }
